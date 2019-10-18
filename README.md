@@ -1,2 +1,2 @@
 # gmall
-java gmall
+>> java gmal
