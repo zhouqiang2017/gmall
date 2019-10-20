@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.adacie.gmall.user.dao.UserDao">
+    <select id="selectAllUser" resultType="cn.adacie.gmall.user.entity.UserEntity" parameterType="long">
+        select * from ums_member
+    </select>
+</mapper>
