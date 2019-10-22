@@ -2,9 +2,11 @@ package cn.adacie.gmall.user.entity;
 
 import cn.adacie.gmall.user.enums.SexEnum;
 import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author zhou_qiang
@@ -28,6 +30,7 @@ public class UserEntity {
     private Date createTime;
     private String icon;
     private SexEnum gender;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthday;
     private String city;
@@ -38,6 +41,16 @@ public class UserEntity {
     private long growth;
     private long luckeyCount;
     private long historyIntegration;
+    //一对多关系映射   主表实体类应该包含从表实体类的集合引用
+    private List<UserReceiveAddress> userReceiveAddresses;
+
+    public List<UserReceiveAddress> getUserReceiveAddresses() {
+        return userReceiveAddresses;
+    }
+
+    public void setUserReceiveAddresses(List<UserReceiveAddress> userReceiveAddresses) {
+        this.userReceiveAddresses = userReceiveAddresses;
+    }
 
     public long getId() {
         return id;

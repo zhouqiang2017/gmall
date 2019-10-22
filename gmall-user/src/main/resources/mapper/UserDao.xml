@@ -3,7 +3,38 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.adacie.gmall.user.dao.UserDao">
-    <select id="selectAllUser" resultType="cn.adacie.gmall.user.entity.UserEntity" parameterType="long">
-        select * from ums_member
+    <!--  定义需要查询包含收货地址的用户的resultMap  (一对多映射) -->
+    <resultMap id="userReceiveAddressMap" type="cn.adacie.gmall.user.entity.UserEntity">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="nickname" column="nickname"/>
+        <result property="phone" column="phone"/>
+        <result property="birthday" column="birthday"/>
+        <!--   配置 ReceiveAddress 集合的映射     -->
+        <collection property="userReceiveAddresses" ofType="cn.adacie.gmall.user.entity.UserReceiveAddress">
+            <id property="id" column="did"/>
+            <result property="name" column="name"/>
+            <result property="phoneNumber" column="phone_number"/>
+            <result property="detailAddress" column="detail_address"/>
+            <result property="memberId" column="member_id"/>
+        </collection>
+    </resultMap>
+    <!--  查询所有用户带收货地址（一对多）不加分页  -->
+    <select id="selectallwithreceiveaddress" resultMap="userReceiveAddressMap">
+        select *,d.id did,d.name,d.phone_number,d.detail_address,d.member_id from `ums_member` u left join `ums_member_receive_address` d ON u.id = d.`member_id`
     </select>
+    <!--  查询所有用户带收货地址（一对多）加上分页  -->
+    <select id="selectAllUserWithReceiveAddressPagenaiton" resultMap="userReceiveAddressMap">
+        select *,d.id did,d.name,d.phone_number,d.detail_address,d.member_id from `ums_member` u left join `ums_member_receive_address` d ON u.id = d.`member_id` ${ew.customSqlSegment}
+    </select>
+    <!--  根据id查询用户带收货地址（一对多）  -->
+    <select id="selectUserWithReceiveAddress" resultMap="userReceiveAddressMap" parameterType="integer">
+        select
+            *,d.id did,d.name,d.phone_number,d.detail_address,d.member_id
+        from `ums_member` u
+        left join `ums_member_receive_address` d ON u.id = d.`member_id`
+        where u.id =  #{uid}
+    </select>
+
+
 </mapper>
